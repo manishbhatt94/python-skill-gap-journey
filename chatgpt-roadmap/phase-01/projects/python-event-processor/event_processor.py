@@ -21,14 +21,63 @@ def parse_json_lines(lines, stats):
         yield line_number, record
 
 
+def is_valid_record(record):
+    if not isinstance(record, dict):
+        return False
+
+    required_keys = ("id", "type")
+
+    return all(
+        isinstance(record.get(key), str) and bool(record[key].strip())
+        for key in required_keys
+    )
+
+
+def valid_records(records, stats):
+    for line_number, record in records:
+        if not is_valid_record(record):
+            stats["invalid_records"] += 1
+            print(f"Skipping invalid record on line {line_number}")
+            continue
+
+        stats["valid_records"] += 1
+        yield line_number, record
+
+
+def normalize_records(records):
+    for line_number, record in records:
+        normalized_record = record.copy()
+        normalized_record["type"] = normalized_record["type"].strip().lower()
+
+        yield line_number, normalized_record
+
+
+def select_records(records, *, event_type):
+    for line_number, record in records:
+        if record["type"] == event_type:
+            yield line_number, record
+
+
 # Test Code:
 
 stats = {
     "total_lines": 0,
     "malformed_json_lines": 0,
+    "invalid_records": 0,
+    "valid_records": 0,
 }
 
-for line_number, record in parse_json_lines(read_lines("data/events.ndjson"), stats):
+pipeline = select_records(
+    normalize_records(
+        valid_records(
+            parse_json_lines(read_lines("data/events.ndjson"), stats),
+            stats,
+        ),
+    ),
+    event_type="login",
+)
+
+for line_number, record in pipeline:
     print(line_number, repr(record))
 
 print(stats)
