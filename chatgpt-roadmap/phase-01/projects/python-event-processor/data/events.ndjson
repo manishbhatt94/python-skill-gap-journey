@@ -1,0 +1,9 @@
+{"id":"evt-001","type":" LOGIN ","user_id":12,"metadata":{"source":"web"}}
+{"id":"evt-002","type":"purchase","user_id":12,"metadata":{"source":"app"}}
+{"id":"evt-003","type":"login","user_id":27,"metadata":{"source":"web"}}
+{"id":"evt-004","type":"  ","user_id":30,"metadata":{"source":"web"}}
+{"type":"login","user_id":35}
+{ this is not valid JSON }
+{"id":"evt-005","type":" LOGOUT ","user_id":12,"metadata":{"source":"mobile"}}
+null
+{"id":"evt-006","type":"login","user_id":45,"metadata":{"source":"mobile"}}

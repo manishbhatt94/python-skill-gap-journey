@@ -1,0 +1,60 @@
+# ====== Windows OS Specific ======
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# ====== Python Specific ======
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ====== Distribution / packaging ======
+bin/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# ====== Virtual Environments ======
+.venv/
+venv/
+ENV/
+env/
+ENV_DIR/
+pip-delete-this-directory.txt
+
+# ====== IDEs and Editors ======
+# VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/code-workspace
+
+# PyCharm / IntelliJ
+.idea/
+
+# ====== Environment Variables & Secrets ======
+.env
+.env.*
+!.env.example
+*.secrets

@@ -1,0 +1,37 @@
+# ====== Line Ending Management ======
+# Set the default behavior to automatically normalize line endings
+* text=auto
+
+# Explicitly declare text files you want to always be normalized and converted
+# to LF (Linux/Mac style) when committed to the repository, but native on checkout
+*.py text diff=python
+*.md text
+*.csv text
+*.txt text
+*.json text
+*.jsonl text
+*.ndjson text
+*.yaml text
+*.yml text
+*.ini text
+*.cfg text
+
+# ====== Windows Specific Batch/Script Files ======
+# Force Windows line endings (CRLF) for Windows scripts so they run correctly
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# ====== Bash Scripts ======
+# Force Unix line endings (LF) for Bash scripts so they don't break in git bash/WSL
+*.sh text eol=lf
+
+# ====== Binary Files ======
+# Explicitly denote files that should not be modified by line-ending normalization
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.exe binary
