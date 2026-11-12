@@ -58,26 +58,45 @@ def select_records(records, *, event_type):
             yield line_number, record
 
 
-# Test Code:
+def generate_summary(records, stats, *, event_type):
+    selected_event_ids = []
 
-stats = {
-    "total_lines": 0,
-    "malformed_json_lines": 0,
-    "invalid_records": 0,
-    "valid_records": 0,
-}
+    for _, record in records:
+        selected_event_ids.append(record["id"])
 
-pipeline = select_records(
-    normalize_records(
-        valid_records(
-            parse_json_lines(read_lines("data/events.ndjson"), stats),
-            stats,
+    return {
+        **stats,
+        "selected_event_type": event_type,
+        "selected_event_count": len(selected_event_ids),
+        "selected_event_ids": selected_event_ids,
+    }
+
+
+def process_events(path, *, event_type):
+    stats = {
+        "total_lines": 0,
+        "malformed_json_lines": 0,
+        "invalid_records": 0,
+        "valid_records": 0,
+    }
+
+    pipeline = select_records(
+        normalize_records(
+            valid_records(
+                parse_json_lines(read_lines(path), stats),
+                stats,
+            ),
         ),
-    ),
-    event_type="login",
-)
+        event_type=event_type,
+    )
 
-for line_number, record in pipeline:
-    print(line_number, repr(record))
+    return generate_summary(pipeline, stats, event_type=event_type)
 
-print(stats)
+
+if __name__ == "__main__":
+    summary = process_events(
+        "data/events.ndjson",
+        event_type="logout",  # Or: event_type="login",
+    )
+
+    print(summary)
