@@ -1,4 +1,7 @@
 import json
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def read_lines(path):
@@ -15,7 +18,11 @@ def parse_json_lines(lines, stats):
             record = json.loads(line)
         except json.JSONDecodeError as exc:
             stats["malformed_json_lines"] += 1
-            print(f"Skipping malformed JSON on line {line_number}: {exc.msg}")
+            logger.warning(
+                "Skipping malformed JSON on line %s: %s",
+                line_number,
+                exc.msg,
+            )
             continue
 
         yield line_number, record
@@ -37,7 +44,7 @@ def valid_records(records, stats):
     for line_number, record in records:
         if not is_valid_record(record):
             stats["invalid_records"] += 1
-            print(f"Skipping invalid record on line {line_number}")
+            logger.warning("Skipping invalid record on line %s", line_number)
             continue
 
         stats["valid_records"] += 1
@@ -94,9 +101,14 @@ def process_events(path, *, event_type):
 
 
 if __name__ == "__main__":
+    logging.basicConfig(
+        level=logging.WARNING,
+        format="%(levelname)s: %(message)s",
+    )
+
     summary = process_events(
         "data/events.ndjson",
-        event_type="logout",  # Or: event_type="login",
+        event_type="login",  # Or: event_type="logout",
     )
 
     print(summary)
